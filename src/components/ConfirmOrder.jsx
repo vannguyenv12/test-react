@@ -46,13 +46,13 @@ const ConfirmOrder = ({ open, setOpen, order }) => {
           {order.method === 'cash' ? 'Tiền mặt' : 'Thẻ'}
         </p>
         <p>
-          <strong>Tổng tiền:</strong> {order.totalPrice.toLocaleString()} VND
+          <strong>Tổng tiền:</strong> {order.totalPrice.toLocaleString()}đ
         </p>
 
         {order.method === 'cash' && (
           <p>
             <strong>Tiền khách đưa:</strong>{' '}
-            {order.priceOfCustomer.toLocaleString()} VND
+            {order.priceOfCustomer.toLocaleString()}đ
           </p>
         )}
       </Modal>

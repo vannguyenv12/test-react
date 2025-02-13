@@ -99,12 +99,23 @@ const CreateOrder = () => {
       row.style.transform = 'scale(0.9)';
 
       setTimeout(() => {
-        setOrder((prevOrder) => ({
-          ...prevOrder,
-          selectedProducts: prevOrder.selectedProducts.filter(
+        setOrder((prevOrder) => {
+          const updatedProducts = prevOrder.selectedProducts.filter(
             (product) => product.id !== cartProduct.id
-          ),
-        }));
+          );
+
+          const newTotalPrice = updatedProducts.reduce(
+            (sum, product) =>
+              sum + (product.totalPrice ?? product.price) * product.quantity,
+            0
+          );
+
+          return {
+            ...prevOrder,
+            selectedProducts: updatedProducts,
+            totalPrice: newTotalPrice,
+          };
+        });
       }, 300);
     }
   };
@@ -269,24 +280,21 @@ const CreateOrder = () => {
             {
               title: 'Actions',
               render: (_, record) => (
-                <tr id={`row-${record.id}`}>
-                  <td>
-                    <Button
-                      color='red'
-                      variant='outlined'
-                      onClick={() => handleDeleteCart(record)}
-                    >
-                      Xóa
-                    </Button>
-                  </td>
-                </tr>
+                <Button
+                  id={`row-${record.id}`}
+                  color='red'
+                  variant='outlined'
+                  onClick={() => handleDeleteCart(record)}
+                >
+                  Xóa
+                </Button>
               ),
             },
           ]}
         />
 
         <Card style={{ marginTop: 10 }}>
-          <h3>Tổng tiền: {order.totalPrice} VND</h3>
+          <h3>Tổng tiền: {order.totalPrice.toLocaleString()}đ</h3>
         </Card>
 
         <Form.Item label='Phương thức thanh toán'>
